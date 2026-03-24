@@ -6,18 +6,21 @@
 </head>
 <body>
 
+  <!-- ✅ Button add kiya -->
+  <button id="download-images-button">Download Images</button>
+
   <div id="loading" style="display:none;">Loading...</div>
   <div id="error"></div>
   <div id="output"></div>
 
   <script>
+    // ✅ Exact URLs jo Cypress expect karta hai
     const imageUrls = [
-      "https://picsum.photos/id/1/200",
-      "https://picsum.photos/id/2/200",
-      "https://picsum.photos/id/3/200"
+      "https://picsum.photos/id/237/200/300",
+      "https://picsum.photos/id/238/200/300",
+      "https://picsum.photos/id/239/200/300"
     ];
 
-    // Single image download karne ka promise
     function downloadImage(url) {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -27,34 +30,26 @@
       });
     }
 
-    // Saari images ek saath download karo
     function downloadImages() {
       const loading = document.getElementById('loading');
       const output  = document.getElementById('output');
       const error   = document.getElementById('error');
 
-      // Spinner dikhao
       loading.style.display = 'block';
 
       Promise.all(imageUrls.map(url => downloadImage(url)))
         .then((images) => {
-          // Spinner chupao
           loading.style.display = 'none';
-
-          // Saari images output div mein daalo
           images.forEach(img => output.appendChild(img));
         })
         .catch((err) => {
-          // Spinner chupao
           loading.style.display = 'none';
-
-          // Error message dikhao
           error.textContent = err.message;
         });
     }
 
-    // Page load hote hi shuru karo
-    downloadImages();
+    // ✅ Auto call NAHI — sirf button click pe chalega
+    document.getElementById('download-images-button').onclick = downloadImages;
   </script>
 
 </body>
